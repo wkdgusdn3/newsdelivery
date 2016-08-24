@@ -1,0 +1,29 @@
+<div class="masthead">
+	<div class="title-box">
+		<div class="title-center">
+			<!-- <a href="/"><h2 class="title">뉴스 배달</h2></a> -->
+			<a href="/"><img src="static/images/logo.png" class="logo" onClick="/"></a>
+		</div>
+		{% if is_authenticated %}
+		<div class="title-right">
+			<div style="display:inline">안녕하세요! <a href="manage_info" id="">{{ email }}</a> 님!&nbsp</div>
+			<button type="button" class="btn btn-default" onclick="logOut()">로그아웃</button>
+			<input type="hidden" id="seq" value="{{seq}}">
+		</div>
+		{% else %}
+		<div class="title-right">
+			<button type="button" class="btn btn-default" onclick="location.href='signup'">회원가입</button>
+			<button type="button" class="btn btn-default" onclick="location.href='signin'">로그인</button>
+		</div>
+		{% endif %}
+	</div>
+
+	<nav>
+		<ul class="nav nav-justified">
+			<li name="menuBar" value="0"><a href="/main">뉴스배달</a></li>
+			<li name="menuBar" value="1"><a href="/register_keyword">키워드 등록</a></li>
+			<li name="menuBar" value="2"><a href="/manage_keyword">키워드 관리</a></li>
+			<li name="menuBar" value="3"><a href="/manage_info">개인정보 관리</a></li>
+		</ul>
+	</nav>
+</div>

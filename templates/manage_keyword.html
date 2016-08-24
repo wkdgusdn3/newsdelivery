@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% include "head.html" %}
+	<script src="static/javascript/manage_keyword.js"></script>
+</head>
+
+<body>
+
+	<div class="container">
+		{% include "header.html" %}
+
+		<div class="manage-keyword-div">
+
+			<div class="manage-keyword-button" style="text-align:right">
+				<button type="button" class="btn btn-danger" id="deleteKeyword">삭제</button>
+			</div>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<colgroup>
+					<col width="30"/>
+					<col width="50"/>
+					<col width="50"/>
+				</colgroup>
+				<thread>
+					<tr>
+						<td></td>
+						<td>키워드</td>
+						<td>신문사</td>
+					</tr>
+				</thread>
+				<tbody>
+					{% for i in rows %}
+					<tr data-toggle="modal">
+						<td onclick="event.cancelBubble = true;"><input type="checkbox" name='keyword' value="{{i[1]}}" company="{{i[2]}}"></td>
+						<td>{{i[1]}}</td>
+						<td>{{i[2]}}</td>
+					</tr>
+					{% endfor %}     
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	</div> <!-- /container -->
+</body>
+</html>

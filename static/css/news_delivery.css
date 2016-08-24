@@ -1,0 +1,84 @@
+.logo {
+  width: 235;
+  height: 80px;
+}
+
+.title {
+	color: #2E75B6;
+}
+
+.title-center {
+	margin : 0 auto;
+}
+
+.title-right {
+	float: right;
+}
+
+.title-box {
+	margin-top:50px;
+	margin-bottom:50px;
+	text-align: center;
+}
+
+.signup-body {
+  margin-top:50px;
+  margin-left:300px;
+  margin-right:300px;
+}
+
+.signup-text {
+  margin : 0 auto;
+}
+
+.signup-button {
+  margin : 0 auto; 
+}
+
+
+.signin-body {
+  margin-top:50px;
+  margin-left:300px;
+  margin-right:300px;
+}
+
+.signin-text {
+  margin : 0 auto;
+}
+
+.signin-button {
+  margin : 0 auto; 
+}
+
+.index-intro-div {
+  margin-top:100px;
+  text-align: center;
+}
+
+.index-intro {
+  margin : 0 auto;
+  color: #2E75B6;
+  font-size: 20px;
+}
+
+.index-intro-center {
+  width:200px;
+  margin : 0 auto;
+}
+
+.manage-keyword-div {
+  margin-left: 300px;
+  margin-right: 300px;
+}
+
+.manage-keyword-button {
+  margin-top: 50px;
+  margin-bottom: 10px;
+}
+
+.main-div {
+  margin-top: 50px;
+  margin-left: 300px;
+  margin-right: 300px;
+  text-align: center;
+}

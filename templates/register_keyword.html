@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% include "head.html" %}
+	<script src="static/javascript/register_keyword.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		{% include "header.html" %}
+
+		<div class="form-group index-intro-div">
+			<p class="index-intro"> 키워드를 등록하면 이메일로 뉴스를 배달해드립니다. </p>
+			<br>
+			<div class="form-inline">
+				<form action="/" method="post">
+					<select name="company" id="company" class="form-control">
+						<option value="조선일보">조선일보</option>
+						<option value="동아일보">동아일보</option>
+					</select>
+					<input type="text" name="keyword" id="keyword" class="form-control">
+					<button type="button" class="btn btn-primary" onClick="registerKeyword()">키워드 등록</button>
+				</form>
+			</div>
+		</div>
+	</div> <!-- /container -->
+</body>
+</html>
