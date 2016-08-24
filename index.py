@@ -7,8 +7,8 @@ import pymysql, os
 app = Flask(__name__)
 app.secret_key = urandom(16)
 
-host="localhost"
-id="root"
+host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
+id = "wkdgusdn3"
 password="wkdgusdn3"
 name="news_delivery"
 

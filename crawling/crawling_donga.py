@@ -10,8 +10,8 @@ from email.header import Header
 
 # database 연결
 def setDB() :
-    host = "localhost"
-    id = "root"
+    host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
+    id = "wkdgusdn3"
     password = "wkdgusdn3"
     name = "news_delivery"
 
