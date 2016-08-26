@@ -30,35 +30,32 @@ def newsListCrawling(url):
         soup = BeautifulSoup(html, "lxml") # html을 beautifulSoup으로 생성
 
         for i in soup.select(".articleList .rightList") :   # 각각의 기사
-            try :
-                title = pymysql.escape_string(i.select(".title a")[0].text) # get title
-                newsUrl = i.select("a")[0]["href"] # get url
-                date = i.select("span")[0].text.replace("[", "").replace("]", "") # get date
+            title = pymysql.escape_string(i.select(".title a")[0].text) # get title
+            newsUrl = i.select("a")[0]["href"] # get url
+            date = i.select("span")[0].text.replace("[", "").replace("]", "") # get date
 
-                # 이전에 등록된 기사인지 확인
-                query = "SELECT * FROM crawling_news WHERE url = '%s'" %(newsUrl) 
+            # 이전에 등록된 기사인지 확인
+            query = "SELECT * FROM crawling_news WHERE url = '%s'" %(newsUrl) 
+            cur.execute(query)
+
+            if cur.rowcount == 0 : # 이전에 등록된 뉴스가 아니면
+                query = "INSERT INTO crawling_news(title, company, url, date) VALUE('%s', '%s', '%s', '%s');" %(title, '동아일보', newsUrl, date) # 뉴스 insert
                 cur.execute(query)
+                news_seq = cur.lastrowid;   # 가장 큰 seq get
 
-                if cur.rowcount == 0 : # 이전에 등록된 뉴스가 아니면
-                    query = "INSERT INTO crawling_news(title, company, url, date) VALUE('%s', '%s', '%s', '%s');" %(title, '동아일보', newsUrl, date) # 뉴스 insert
-                    cur.execute(query)
-                    news_seq = cur.lastrowid;   # 가장 큰 seq get
+                print(newsUrl)
 
-                    print(newsUrl)
+                newsDetailCrawling(newsUrl) # news의 세부기사 크롤링
 
-                    newsDetailCrawling(newsUrl) # news의 세부기사 크롤링
+                for i in keyword :
+                    if i[2] in title and i[3] == '동아일보' : # 등록된 키워드이면
+                        sendEmail(i[0], i[1], i[2], title, newsUrl, news_seq) # 이메일로 전송
+            else :
+                db.commit()
+                smtp.quit()
+                sys.exit()
 
-                    for i in keyword :
-                        if i[2] in title and i[3] == '동아일보' : # 등록된 키워드이면
-                            sendEmail(i[0], i[1], i[2], title, newsUrl, news_seq) # 이메일로 전송
-                else :
-                    db.commit()
-                    smtp.quit()
-                    sys.exit()
-            except :
-                print("error : " + newsUrl)
-
-        if count > 17000 : # 최대 17000개까지만 크롤링
+        if count > 1700 : # 최대 17000개까지만 크롤링
             sys.exit()
             sys.exit()
             
