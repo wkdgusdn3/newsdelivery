@@ -72,7 +72,7 @@ def newsDetailCrawling(url) :
     html = r.text
     soup = BeautifulSoup(html, 'lxml')
 
-    time = soup.select(".date_ctrl_2011 p")[0].text.strip()[5:20] # time get
+    time = soup.select(".date_ctrl_2011 p")[0].text.strip()[5:21] # time get
 
     # 기사 내용 get
     content = "";
