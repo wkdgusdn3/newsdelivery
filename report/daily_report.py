@@ -69,7 +69,7 @@ def sendDailyDelivery():
     today = str(now.tm_year) + "." + str(now.tm_mon) + "." + str(now.tm_mday) # 오늘의 날짜
     tomorrow = str(now.tm_year) + "." + str(now.tm_mon) + "." + str(now.tm_mday+1) # 내일의 날짜
     
-    query = "SELECT email, title, company, url FROM delivery_log, user, crawling_news WHERE user.seq = delivery_log.user_seq AND crawling_news.seq = delivery_log.news_seq AND date > '%s' AND date < '%s'" %(today, tomorrow)
+    query = "SELECT email, title, company, url FROM delivery_log, user, crawling_news WHERE user.seq = delivery_log.user_seq AND crawling_news.seq = delivery_log.news_seq AND crawling_news.date > '%s' AND crawling_news.date < '%s'" %(today, tomorrow)
     cur.execute(query)
     
     rows = cur.fetchall()
