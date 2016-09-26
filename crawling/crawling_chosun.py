@@ -108,7 +108,7 @@ def connectEmail() :
     smtp = smtplib.SMTP("smtp.gmail.com", 587)
     smtp.ehlo()
     smtp.starttls()
-    passwd = "wkdgusdn3"
+    passwd = "wkd12345!@"
     smtp.login(sender, passwd)
 
 # 이메일 전송
