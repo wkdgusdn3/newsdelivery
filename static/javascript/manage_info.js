@@ -4,6 +4,8 @@ function updateInfo() {
 	var password_confirm = $("#password_confirm").val();
 	var birth = $("#birth").val();
 	var sex = $("#sex").val();
+	var realTimeDelivery = $("[name='subscription-type-checkbox']")[0].checked;
+	var dailyDelivery = $("[name='subscription-type-checkbox']")[1].checked;
 
 	if(password != password_confirm) { // 비밀번호 check
 		alert("비밀번호가 다릅니다.");
@@ -15,7 +17,7 @@ function updateInfo() {
 			url: "/manage_info/update",
 			type: "post",
 			dataType : "json",
-			data: {seq:seq, birth:birth, sex:sex},
+			data: {seq:seq, birth:birth, sex:sex, realTimeDelivery:realTimeDelivery, dailyDelivery:dailyDelivery},
 			success: function(data) {
 				var json = JSON.parse(JSON.stringify(data));
 				if(json.status == "success") {
@@ -34,7 +36,7 @@ function updateInfo() {
 			url: "/manage_info/update",
 			type: "post",
 			dataType : "json",
-			data: {seq:seq, password:SHA256(password), birth:birth, sex:sex},
+			data: {seq:seq, password:SHA256(password), birth:birth, sex:sex, realTimeDelivery:realTimeDelivery, dailyDelivery:dailyDelivery},
 			success: function(data) {
 				var json = JSON.parse(JSON.stringify(data));
 				if(json.status == "success") {

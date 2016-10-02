@@ -67,11 +67,14 @@ def manageInfo():
 		seq = session['seq']
 
 		cur = g.db.cursor()
-		cur.execute("SELECT birth, sex FROM user WHERE seq = '%s'" %(seq))
+		cur.execute("SELECT birth, sex, realtime_delivery, daily_delivery FROM user WHERE seq = '%s'" %(seq))
 		rows = cur.fetchall()
 
+		# realTimeDelivery = rows[0][2] == 1 and 'true' or 'false'
+		# dailyDelivery = rows[0][3] == 1 and 'true' or 'false'
+
 		return render_template('manage_info.html', is_authenticated=True,
-				email=session['email'], seq=session['seq'], birth = rows[0][0], sex = rows[0][1])
+				email=session['email'], seq=session['seq'], birth = rows[0][0], sex = rows[0][1], realTimeDelivery = rows[0][2], dailyDelivery = rows[0][3])
 	else: # 세션 실패
 		return render_template("signin.html")
 
@@ -155,16 +158,16 @@ def manageInfo_update():
 	password = request.form.get("password")
 	birth = request.form.get("birth")
 	sex = request.form.get("sex")
-
-	print(password)
+	realTimeDelivery = request.form.get("realTimeDelivery") == "true" and 1 or 0
+	dailyDelivery = request.form.get("dailyDelivery") == "true" and 1 or 0
 
 	cur = g.db.cursor()
 
 	# 회원정보 업데이트
 	if password == None :
-		cur.execute("UPDATE user SET birth = '%s', sex = '%s' WHERE seq = '%s'" %(birth, sex, seq))
+		cur.execute("UPDATE user SET birth = '%s', sex = '%s', realtime_delivery = '%s', daily_delivery = '%s' WHERE seq = '%s'" %(birth, sex, realTimeDelivery, dailyDelivery, seq))
 	else :
-		cur.execute("UPDATE user SET password = '%s', birth = '%s', sex = '%s' WHERE seq = '%s'" %(password, birth, sex, seq))
+		cur.execute("UPDATE user SET password = '%s', birth = '%s', sex = '%s', realtime_delivery = '%s', daily_delivery = '%s' WHERE seq = '%s'" %(password, birth, sex, realTimeDelivery, dailyDelivery, seq))
 	
 	g.db.commit()	
 

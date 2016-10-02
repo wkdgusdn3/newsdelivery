@@ -31,11 +31,11 @@
 					<label for="birth">태어난연도</label>
 					<select name="birth" id="birth" class="form-control">
 						{% for i in range(1901, 2017) %}
-							{% if i == birth %}
-							<option value="{{i}}" selected="selected">{{i}}</option>
-							{% else %}
-							<option value="{{i}}">{{i}}</option>
-							{% endif %}
+						{% if i == birth %}
+						<option value="{{i}}" selected="selected">{{i}}</option>
+						{% else %}
+						<option value="{{i}}">{{i}}</option>
+						{% endif %}
 						{% endfor %}            
 					</select>
 				</div>
@@ -43,13 +43,31 @@
 					<label for="sex">성별</label>
 					<select name="sex" id="sex" class="form-control">
 						{% if sex == 0 %}
-							<option value="0" selected="selected">남자</option>
-							<option value="1">여자</option>
+						<option value="0" selected="selected">남자</option>
+						<option value="1">여자</option>
 						{% else %}
-							<option value="0">남자</option>
-							<option value="1"  selected="selected">여자</option>
+						<option value="0">남자</option>
+						<option value="1"  selected="selected">여자</option>
 						{% endif %}
 					</select>
+				</div>
+				<div class="form-group">
+					<label for="subscription-type">구독방법</label>
+					<br>
+					<label class="checkbox-inline">
+						{% if realTimeDelivery == 1 %}
+							<input type="checkbox" name="subscription-type-checkbox" value="realtime_delivery" checked="checked"> 실시간 뉴스 배달
+						{% else %}
+							<input type="checkbox" name="subscription-type-checkbox" value="realtime_delivery"> 실시간 뉴스 배달
+						{% endif %}
+					</label>
+					<label class="checkbox-inline">
+						{% if dailyDelivery == 1 %}
+							<input type="checkbox" name="subscription-type-checkbox" value="daily_delivery" checked="checked"> 일일 뉴스 배달
+						{% else %}
+							<input type="checkbox" name="subscription-type-checkbox" value="daily_delivery"> 일일 뉴스 배달
+						{% endif %}
+					</label>
 				</div>
 				<div class="title-box">
 					<button type="button" class="btn btn-default signup-button" onClick="updateInfo()">회원정보 변경</button>
