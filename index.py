@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flak import *
+from flask import *
 from os import urandom
 import pymysql
 
