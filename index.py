@@ -28,79 +28,79 @@ def index():
 # main page
 @app.route('/main')
 def main():
-	if('email' in session): # ì„¸ì…˜ ì„±ê³µ
+	if('email' in session): # ¼¼¼Ç ¼º°ø
 		return render_template('main.html', is_authenticated=True,
 				email=session['email'], seq=session['seq'])
-	else: # ì„¸ì…˜ ì‹¤íŒ¨
+	else: # ¼¼¼Ç ½ÇÆĞ
 		return render_template("main.html")
 
-# í‚¤ì›Œë“œ ë“±ë¡ page
+# Å°¿öµå µî·Ï page
 @app.route('/register_keyword')
 def registerKeyword():
-	if('email' in session): # ì„¸ì…˜ ì„±ê³µ
+	if('email' in session): # ¼¼¼Ç ¼º°ø
 		return render_template('register_keyword.html', is_authenticated=True,
 				email=session['email'], seq=session['seq'])
-	else: # ì„¸ì…˜ ì‹¤íŒ¨
+	else: # ¼¼¼Ç ½ÇÆĞ
 		return render_template("signin.html")
 
-# í‚¤ì›Œë“œ ê´€ë¦¬ page
+# Å°¿öµå °ü¸® page
 @app.route('/manage_keyword')
 def manageKeyword():
-	if('email' in session): # ì„¸ì…˜ ì„±ê³µ
+	if('email' in session): # ¼¼¼Ç ¼º°ø
 
 		seq = session['seq']
 
 		cur = g.db.cursor()
-		cur.execute("SELECT * FROM keyword WHERE user_seq='%s' ORDER BY company, keyword" %(seq)) # ë“±ë¡ëœ í‚¤ì›Œë“œ ì •ë³´ë¥¼ ê°€ì ¸ì˜¤ê¸°
+		cur.execute("SELECT * FROM keyword WHERE user_seq='%s' ORDER BY company, keyword" %(seq)) # µî·ÏµÈ Å°¿öµå Á¤º¸¸¦ °¡Á®¿À±â
 		rows = cur.fetchall()
 
 		return render_template('manage_keyword.html', is_authenticated=True,
 				email=session['email'], seq=session['seq'], rows=rows)
-	else: # ì„¸ì…˜ ì‹¤íŒ¨
+	else: # ¼¼¼Ç ½ÇÆĞ
 		return render_template("signin.html")
 
-# íšŒì› ì •ë³´ ê´€ë¦¬ page
+# È¸¿ø Á¤º¸ °ü¸® page
 @app.route('/manage_info')
 def manageInfo():
-	if('email' in session): # ì„¸ì…˜ ì„±ê³µ
+	if('email' in session): # ¼¼¼Ç ¼º°ø
 		return render_template('manage_info.html', is_authenticated=True,
 				email=session['email'], seq=session['seq'])
-	else: # ì„¸ì…˜ ì‹¤íŒ¨
+	else: # ¼¼¼Ç ½ÇÆĞ
 		return render_template("signin.html")
 
-# íšŒì› ê°€ì… page
+# È¸¿ø °¡ÀÔ page
 @app.route('/signup')
 def signUp():
 	return render_template("signup.html")
 
-# ë¡œê·¸ì¸ page
+# ·Î±×ÀÎ page
 @app.route('/signin')
 def signIn():
 	return render_template("signin.html")
 
-# ë¡œê·¸ì¸ ìš”ì²­
+# ·Î±×ÀÎ ¿äÃ»
 @app.route('/signin/signin', methods=['POST'])
 def signIn_signIn() :
 	email = request.form.get("email")
 	password = request.form.get("password")
 
 	cur = g.db.cursor();
-	cur.execute("SELECT * FROM user WHERE email='%s' AND password='%s'" %(email, password))	# email, ë¹„ë°€ë²ˆí˜¸ í™•ì¸
+	cur.execute("SELECT * FROM user WHERE email='%s' AND password='%s'" %(email, password))	# email, ºñ¹Ğ¹øÈ£ È®ÀÎ
 	rows = cur.fetchall()
 
-	if len(rows) == 0 :	# ë¡œê·¸ì¸ ì‹¤íŒ¨
-		return jsonify({"status": "fail"})	# ë¡œê·¸ì¸ ì‹¤íŒ¨
-	else : # ë¡œê·¸ì¸ ì„±ê³µ
+	if len(rows) == 0 :	# ·Î±×ÀÎ ½ÇÆĞ
+		return jsonify({"status": "fail"})	# ·Î±×ÀÎ ½ÇÆĞ
+	else : # ·Î±×ÀÎ ¼º°ø
 		session['email'] = email
 		session['password'] = password
 		session['seq'] = rows[0][0]
 
-		if('email' in session) : # ì„¸ì…˜ ì„±ê³µ
+		if('email' in session) : # ¼¼¼Ç ¼º°ø
 			return jsonify({"status": "success"})
-		else: # ì„¸ì…˜ ì‹¤íŒ¨
-			return jsonify({"status": "fail"})	# ë¡œê·¸ì¸ ì‹¤íŒ¨
+		else: # ¼¼¼Ç ½ÇÆĞ
+			return jsonify({"status": "fail"})	# ·Î±×ÀÎ ½ÇÆĞ
 
-# íšŒì›ê°€ì… ìš”ì²­
+# È¸¿ø°¡ÀÔ ¿äÃ»
 @app.route('/signup/signup', methods=['POST'])
 def signUp_signUp():
 
@@ -110,37 +110,37 @@ def signUp_signUp():
 	sex = request.form.get("sex")
 
 	cur = g.db.cursor()
-	cur.execute("SELECT * FROM user WHERE email='%s'" %(email))	# emailì´ ì¤‘ë³µë˜ëŠ”ì§€ í™•ì¸í•˜ê¸° ìœ„í•´ query ì‚¬ìš©
+	cur.execute("SELECT * FROM user WHERE email='%s'" %(email))	# emailÀÌ Áßº¹µÇ´ÂÁö È®ÀÎÇÏ±â À§ÇØ query »ç¿ë
 	rows = cur.fetchall()
 
-	if len(rows) == 0 :		# íšŒì›ê°€ì… ì„±ê³µ
+	if len(rows) == 0 :		# È¸¿ø°¡ÀÔ ¼º°ø
 		cur.execute("INSERT INTO user(email, password, birth, sex) VALUES('%s', '%s', '%s', '%s')" %(email, password, birth, sex)) 
 		db.commit()
 		return jsonify({"status": "success"})	
-	else :			# íšŒì›ê°€ì… ì‹¤íŒ¨
+	else :			# È¸¿ø°¡ÀÔ ½ÇÆĞ
 		return jsonify({"status": "fail"})
 
-# ë¡œê·¸ì•„ì›ƒ
+# ·Î±×¾Æ¿ô
 @app.route("/logout", methods=["POST"])
 def logOut() :
-	session.clear() # ì„¸ì…˜ ì§€ì›€
+	session.clear() # ¼¼¼Ç Áö¿ò
 	return jsonify({"status": "success"})
 
-# í‚¤ì›Œë“œ ë“±ë¡
+# Å°¿öµå µî·Ï
 @app.route("/register_keyword/insert", methods=["POST"])
 def registerKeyword_insert() :
 	seq = request.form.get("seq")
 	keyword = request.form.get("keyword")
 	company = request.form.get("company")
 
-	# keyword tableì— keyword ì¶”ê°€
+	# keyword table¿¡ keyword Ãß°¡
 	cur = g.db.cursor()
 	cur.execute("INSERT INTO keyword(user_seq, keyword, company) VALUES('%s', '%s', '%s')" %(seq, keyword, company)) 
 	db.commit()
 
 	return jsonify({"status": "success"})
 
-# íšŒì›ì •ë³´ ì—…ë°ì´íŠ¸
+# È¸¿øÁ¤º¸ ¾÷µ¥ÀÌÆ®
 @app.route('/manage_info/update', methods=['POST'])
 def manageInfo_update():
 
@@ -151,12 +151,12 @@ def manageInfo_update():
 
 	cur = g.db.cursor()
 
-	# íšŒì›ì •ë³´ ì—…ë°ì´íŠ¸
+	# È¸¿øÁ¤º¸ ¾÷µ¥ÀÌÆ®
 	cur.execute("UPDATE user SET password = '%s', birth = '%s', sex = '%s' WHERE seq = '%s'" %(password, birth, sex, seq))
 	db.commit()
 	return jsonify({"status": "success"})	
 
-# í‚¤ì›Œë“œ ì‚­ì œ
+# Å°¿öµå »èÁ¦
 @app.route('/manage_keyword/delete', methods=['POST'])
 def manageKeyword_delete():
 
@@ -168,7 +168,7 @@ def manageKeyword_delete():
 
 	i = 0
 
-	# í‚¤ì›Œë“œ ì‚­ì œ
+	# Å°¿öµå »èÁ¦
 	for i in range(0, len(keyword)) :
 		cur.execute("DELETE FROM keyword WHERE user_seq = '%s' AND keyword = '%s' AND company = '%s'" %(seq, keyword[i], company[i]))
 
