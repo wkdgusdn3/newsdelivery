@@ -70,9 +70,6 @@ def manageInfo():
 		cur.execute("SELECT birth, sex, realtime_delivery, daily_delivery FROM user WHERE seq = '%s'" %(seq))
 		rows = cur.fetchall()
 
-		# realTimeDelivery = rows[0][2] == 1 and 'true' or 'false'
-		# dailyDelivery = rows[0][3] == 1 and 'true' or 'false'
-
 		return render_template('manage_info.html', is_authenticated=True,
 				email=session['email'], seq=session['seq'], birth = rows[0][0], sex = rows[0][1], realTimeDelivery = rows[0][2], dailyDelivery = rows[0][3])
 	else: # 세션 실패
@@ -171,8 +168,6 @@ def manageInfo_update():
 	
 	g.db.commit()	
 
-	
-	
 	return jsonify({"status": "success"})	
 
 # 키워드 삭제

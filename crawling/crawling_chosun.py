@@ -53,7 +53,14 @@ def newsListCrawling(url) :
 
                 for i in keyword :
                     if i[2] in title and i[3] == '조선일보' :   # 등록된 키워드이면
-                        sendEmail(i[0], i[1], i[2], title, newsUrl, news_seq) # 메일로 전송
+                        # 뉴스 배달 로그 저장
+                        deliveryLogQuery = "INSERT INTO delivery_log(user_seq, news_seq) VALUE('%s', '%s');" %(user_seq, news_seq)
+                        cur.execute(deliveryLogQuery)
+                        print(deliveryLogQuery)
+
+                        if i[4] == 1 :
+                            sendEmail(i[0], i[1], i[2], title, newsUrl, news_seq) # 메일로 전송
+                            print("sendEmail")
             else :  # 이전에 등록한 뉴스이면 종료
                 db.commit()
                 smtp.quit()
@@ -87,7 +94,7 @@ def newsDetailCrawling(url) :
 
 # database에서 keyword를 가져온다
 def getKeyword() :
-    query = "SELECT user.seq, email, keyword, company FROM keyword, user WHERE keyword.user_seq = user.seq"
+    query = "SELECT user.seq, email, keyword, company, realtime_delivery FROM keyword, user WHERE keyword.user_seq = user.seq"
     cur.execute(query)
 
     keyword = cur.fetchall()
@@ -126,11 +133,6 @@ def sendEmail(user_seq, email, keyword, title, url, news_seq):
 
     # 이메일 전송
     smtp.sendmail(myemail, mail_to, msg.as_string( ))
-    # 뉴스 배달 로그 저장
-    query = "INSERT INTO delivery_log(user_seq, news_seq) VALUE('%s', '%s');" %(user_seq, news_seq)
-    cur.execute(query)
-
-    # print("send : " + "wkdgusdn3@naver.com " + title)
 
 global db
 global cur
