@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, url_for, render_template, request, session, jsonify, redirect
+from flak import *
 from os import urandom
-import pymysql, os
+import pymysql
 
 app = Flask(__name__)
 app.secret_key = urandom(16)
@@ -12,7 +12,13 @@ id = "wkdgusdn3"
 password="wkdgusdn3"
 name="news_delivery"
 
-db = pymysql.connect(host, id, password, name, charset="utf8")
+@app.before_request
+def before_request():
+	g.db = pymysql.connect(host, id, password, name, charset="utf8")
+
+@app.teardown_request
+def teardown_request(exception):
+	g.db.close()
 
 # default route
 @app.route('/')
@@ -44,7 +50,7 @@ def manageKeyword():
 
 		seq = session['seq']
 
-		cur = db.cursor()
+		cur = g.db.cursor()
 		cur.execute("SELECT * FROM keyword WHERE user_seq='%s' ORDER BY company, keyword" %(seq)) # 등록된 키워드 정보를 가져오기
 		rows = cur.fetchall()
 
@@ -78,7 +84,7 @@ def signIn_signIn() :
 	email = request.form.get("email")
 	password = request.form.get("password")
 
-	cur = db.cursor();
+	cur = g.db.cursor();
 	cur.execute("SELECT * FROM user WHERE email='%s' AND password='%s'" %(email, password))	# email, 비밀번호 확인
 	rows = cur.fetchall()
 
@@ -103,7 +109,7 @@ def signUp_signUp():
 	birth = request.form.get("birth")
 	sex = request.form.get("sex")
 
-	cur = db.cursor()
+	cur = g.db.cursor()
 	cur.execute("SELECT * FROM user WHERE email='%s'" %(email))	# email이 중복되는지 확인하기 위해 query 사용
 	rows = cur.fetchall()
 
@@ -128,7 +134,7 @@ def registerKeyword_insert() :
 	company = request.form.get("company")
 
 	# keyword table에 keyword 추가
-	cur = db.cursor()
+	cur = g.db.cursor()
 	cur.execute("INSERT INTO keyword(user_seq, keyword, company) VALUES('%s', '%s', '%s')" %(seq, keyword, company)) 
 	db.commit()
 
@@ -143,7 +149,7 @@ def manageInfo_update():
 	birth = request.form.get("birth")
 	sex = request.form.get("sex")
 
-	cur = db.cursor()
+	cur = g.db.cursor()
 
 	# 회원정보 업데이트
 	cur.execute("UPDATE user SET password = '%s', birth = '%s', sex = '%s' WHERE seq = '%s'" %(password, birth, sex, seq))
@@ -158,7 +164,7 @@ def manageKeyword_delete():
 	keyword = request.form.getlist("keyword[]")
 	company = request.form.getlist("company[]")
 
-	cur = db.cursor()
+	cur = g.db.cursor()
 
 	i = 0
 
