@@ -48,7 +48,7 @@ def newsListCrawling(url):
                 newsDetailCrawling(newsUrl) # news의 세부기사 크롤링
 
                 for i in keyword :
-                    if i[2] in title and i[3] == '동아일보' : # 등록된 키워드이면
+                    if i[2] in title and (i[3] == '동아일보' or i[3] == '전체') : # 등록된 키워드이면
                         # 뉴스 배달 로그 저장
                         query = "INSERT INTO delivery_log(user_seq, news_seq) VALUE('%s', '%s');" %(i[0], news_seq)
                         cur.execute(query)
