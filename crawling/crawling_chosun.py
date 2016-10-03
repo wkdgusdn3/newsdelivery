@@ -54,7 +54,7 @@ def newsListCrawling(url) :
                 for i in keyword :
                     if i[2] in title and i[3] == '조선일보' :   # 등록된 키워드이면
                         # 뉴스 배달 로그 저장
-                        deliveryLogQuery = "INSERT INTO delivery_log(user_seq, news_seq) VALUE('%s', '%s');" %(user_seq, news_seq)
+                        deliveryLogQuery = "INSERT INTO delivery_log(user_seq, news_seq) VALUE('%s', '%s');" %(i[0], news_seq)
                         cur.execute(deliveryLogQuery)
                         print(deliveryLogQuery)
 
