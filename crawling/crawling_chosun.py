@@ -56,11 +56,9 @@ def newsListCrawling(url) :
                         # 뉴스 배달 로그 저장
                         deliveryLogQuery = "INSERT INTO delivery_log(user_seq, news_seq) VALUE('%s', '%s');" %(i[0], news_seq)
                         cur.execute(deliveryLogQuery)
-                        print(deliveryLogQuery)
 
                         if i[4] == 1 :
                             sendEmail(i[0], i[1], i[2], title, newsUrl, news_seq) # 메일로 전송
-                            print("sendEmail")
             else :  # 이전에 등록한 뉴스이면 종료
                 db.commit()
                 smtp.quit()
