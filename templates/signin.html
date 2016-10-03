@@ -30,7 +30,7 @@
         </div>
         <div class="form-group">
           <label for="password">패스워드</label>
-          <input type="password" class="form-control" name="password" id="password" placeholder="패스워드 입력">
+          <input type="password" class="form-control" name="password" id="password" placeholder="패스워드 입력" onkeypress="if(event.keyCode==13) {signIn(); return false;}">
         </div>
         <div class="title-box">
           <button type="button" class="btn btn-default signin-button" onClick="signIn()">로그인</button>

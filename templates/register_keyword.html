@@ -18,7 +18,7 @@
 						<option value="조선일보">조선일보</option>
 						<option value="동아일보">동아일보</option>
 					</select>
-					<input type="text" name="keyword" id="keyword" class="form-control">
+					<input type="text" name="keyword" id="keyword" class="form-control" onkeypress="if(event.keyCode==13) {registerKeyword(); return false;}">
 					<button type="button" class="btn btn-primary" onClick="registerKeyword()">키워드 등록</button>
 				</form>
 			</div>
