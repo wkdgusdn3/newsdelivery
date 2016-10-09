@@ -8,14 +8,12 @@
 </head>
 
 <body>
-	<div class="container">
+	<div class="container text-center">
 		{% include "header.html" %}
 
-		<div class="title-box">
-			<h2 class="signup-text">개인정보 관리</h2>
-		</div>
+		<br><br><br>
 
-		<div class="signup-body">
+		<div class="col-md-6 col-md-offset-3 text-left">
 			<form action="/manage_info/update" method="post">
 				<div class="form-group">
 					<label for="password">패스워드 <font color ="red">*</font></label>
@@ -56,16 +54,16 @@
 					<br>
 					<label class="checkbox-inline">
 						{% if realTimeDelivery == 1 %}
-							<input type="checkbox" name="subscription-type-checkbox" value="realtime_delivery" checked="checked"> 실시간 뉴스 배달
+						<input type="checkbox" name="subscription-type-checkbox" value="realtime_delivery" checked="checked"> 실시간 뉴스 배달
 						{% else %}
-							<input type="checkbox" name="subscription-type-checkbox" value="realtime_delivery"> 실시간 뉴스 배달
+						<input type="checkbox" name="subscription-type-checkbox" value="realtime_delivery"> 실시간 뉴스 배달
 						{% endif %}
 					</label>
 					<label class="checkbox-inline">
 						{% if dailyDelivery == 1 %}
-							<input type="checkbox" name="subscription-type-checkbox" value="daily_delivery" checked="checked"> 일일 뉴스 배달
+						<input type="checkbox" name="subscription-type-checkbox" value="daily_delivery" checked="checked"> 일일 뉴스 배달
 						{% else %}
-							<input type="checkbox" name="subscription-type-checkbox" value="daily_delivery"> 일일 뉴스 배달
+						<input type="checkbox" name="subscription-type-checkbox" value="daily_delivery"> 일일 뉴스 배달
 						{% endif %}
 					</label>
 				</div>

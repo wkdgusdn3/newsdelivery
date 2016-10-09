@@ -14,15 +14,15 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="container text-center">
 
     {% include "header.html" %}
 
-    <div class="title-box">
-      <h2 class="signup-text">회원가입</h2>
-    </div>
+    <br><br><br>
+    <h2 class="signup-text">회원가입</h2>
+    <br><br>
 
-    <div class="signup-body">
+    <div class="col-md-6 col-md-offset-3 text-left">
       <form action="/signup/signup" method="post">
         <div class="form-group">
           <label for="email">이메일 <font color ="red">*</font></label>
@@ -43,15 +43,15 @@
           <label for="birth">태어난연도</label>
           <select name="birth" id="birth" class="form-control">
             {% for i in range(1901, 2017) %}
-              <option value="{{i}}">{{i}}</option>
+            <option value="{{i}}">{{i}}</option>
             {% endfor %}            
           </select>
         </div>
         <div class="form-group">
           <label for="sex">성별</label>
           <select name="sex" id="sex" class="form-control">
-              <option value="0">남자</option>
-              <option value="1">여자</option>
+            <option value="0">남자</option>
+            <option value="1">여자</option>
           </select>
         </div>
 
