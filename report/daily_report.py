@@ -69,7 +69,7 @@ def sendDailyDelivery():
     today = str(now.tm_year) + "." + str(now.tm_mon) + "." + str(now.tm_mday) # 오늘의 날짜
     tomorrow = str(now.tm_year) + "." + str(now.tm_mon) + "." + str(now.tm_mday+1) # 내일의 날짜
     
-    query = "SELECT email, title, company, url FROM delivery_log, user, crawling_news WHERE user.seq = delivery_log.user_seq AND crawling_news.seq = delivery_log.news_seq AND crawling_news.date BETWEEN '%s' AND '%s' AND user.daily_delivery = 1 ORDER BY email" %(today, tomorrow)
+    query = "SELECT email, title, company, url, crawling_news.date FROM delivery_log, user, crawling_news WHERE user.seq = delivery_log.user_seq AND crawling_news.seq = delivery_log.news_seq AND crawling_news.date BETWEEN '%s' AND '%s' AND user.daily_delivery = 1 ORDER BY email, date" %(today, tomorrow)
     cur.execute(query)
     
     rows = cur.fetchall()
@@ -85,6 +85,7 @@ def sendDailyDelivery():
             if email == i[0] : # 이메일이 같을경우
                 # 기사, 신문사, url 추가
                 content += i[1] + "\n"
+                content += str(i[4]) + "\n"
                 content += i[2] + "\n"
                 content += i[3] + "\n\n"
             else :
@@ -93,9 +94,10 @@ def sendDailyDelivery():
                 email = i[0] # 이메일 초기화
                 content = "" # 내용 초기화
                 content += i[1] + "\n"
+                content += str(i[4]) + "\n"
                 content += i[2] + "\n"
                 content += i[3] + "\n\n"
-               
+
         sendEmail(email, content) # 마지막 user에게 이메일 전송
     
 global db
