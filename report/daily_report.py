@@ -12,8 +12,10 @@ from email.header import Header
 
 # database 연결
 def setDB() :
-    host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
-    id = "wkdgusdn3"
+    # host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
+    # id = "wkdgusdn3"
+    host = "localhost"
+    id = "root"
     password = "wkdgusdn3"
     name = "news_delivery"
 
@@ -57,7 +59,7 @@ def sendEmail(email, content):
     mail_to = []
     mail_to.append(email)
 
-    msg = MIMEText(message.encode('utf-8'), _subtype='plain', _charset='utf-8')
+    msg = MIMEText(message, 'html')
     msg['Subject'] = Header(subject.encode('utf-8'), 'utf-8')
     msg['From'] = myemail
     msg['To'] = ','.join(mail_to)
@@ -84,19 +86,18 @@ def sendDailyDelivery():
         for i in rows :
             if email == i[0] : # 이메일이 같을경우
                 # 기사, 신문사, url 추가
-                content += i[1] + "\n"
-                content += str(i[4]) + "\n"
-                content += i[2] + "\n"
-                content += i[3] + "\n\n"
+                content += "<a href='%s'>%s</a><br>" %(i[3], i[1])
+                content += str(i[4]) + "<br>"
+                content += i[2] + "<br><br>"
+
             else :
                 sendEmail(email, content) # daily email 전송
 
                 email = i[0] # 이메일 초기화
                 content = "" # 내용 초기화
-                content += i[1] + "\n"
-                content += str(i[4]) + "\n"
-                content += i[2] + "\n"
-                content += i[3] + "\n\n"
+                content += "<a href='%s'>%s</a><br>" %(i[3], i[1])
+                content += str(i[4]) + "<br>"
+                content += i[2] + "<br><br>"
 
         sendEmail(email, content) # 마지막 user에게 이메일 전송
     

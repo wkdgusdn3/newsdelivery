@@ -12,6 +12,8 @@ from email.header import Header
 def setDB() :
     host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
     id = "wkdgusdn3"
+    # host = "localhost"
+    # id = "root"
     password = "wkdgusdn3"
     name = "news_delivery"
 
@@ -33,7 +35,7 @@ def newsListCrawling(url) :
 
         for i in soup.select("div .list_item"): # 각각의 기사
             temp = i.select("dt a")[0]
-            title = pymysql.escape_string(temp.text)    # get title
+            title = temp.text    # get title
             newsUrl = temp["href"]  # get news url
             date = i.select(".date_author span")[0].text.split(" ")[0] # get date
 
@@ -43,7 +45,7 @@ def newsListCrawling(url) :
 
             if cur.rowcount == 0 :  # 이전에 등록한 뉴스가 아니면
 
-                query = "INSERT INTO crawling_news(title, company, url, date) VALUE('%s', '%s', '%s', '%s');" %(title, '조선일보', newsUrl, date)   # 뉴스 insert
+                query = "INSERT INTO crawling_news(title, company, url, date) VALUE('%s', '%s', '%s', '%s');" %(pymysql.escape_string(title), '조선일보', newsUrl, date)   # 뉴스 insert
                 cur.execute(query)
                 news_seq = cur.lastrowid;   # 가장 큰 seq get
 
@@ -58,7 +60,7 @@ def newsListCrawling(url) :
                         cur.execute(deliveryLogQuery)
 
                         if i[4] == 1 :
-                            sendEmail(i[0], i[1], i[2], title, newsUrl, news_seq) # 메일로 전송
+                            sendEmail(i[1], i[2], title, newsUrl) # 메일로 전송
             else :  # 이전에 등록한 뉴스이면 종료
                 db.commit()
                 smtp.quit()
@@ -117,14 +119,15 @@ def connectEmail() :
     smtp.login(sender, passwd)
 
 # 이메일 전송
-def sendEmail(user_seq, email, keyword, title, url, news_seq):
+def sendEmail(email, keyword, title, url):
     subject = keyword + "에 대한 뉴스배달입니다."
-    message = title + "\n" + "조선일보\n\n" + url 
+    message = "<a href='%s'>%s</a>" %(url, title)
+    message += "<br>조선일보"
 
     mail_to = []
     mail_to.append(email)
 
-    msg = MIMEText(message.encode('utf-8'), _subtype='plain', _charset='utf-8')
+    msg = MIMEText(message, 'html')
     msg['Subject'] = Header(subject.encode('utf-8'), 'utf-8')
     msg['From'] = myemail
     msg['To'] = ','.join(mail_to)

@@ -14,6 +14,8 @@ from email.header import Header
 def setDB() :
     host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
     id = "wkdgusdn3"
+    # host = "localhost"
+    # id = "root"
     password = "wkdgusdn3"
     name = "news_delivery"
 
@@ -67,7 +69,7 @@ def newsCrawling() :
                     cur.execute(deliveryLogQuery)
                     
                     if i[4] == 1 :
-                        sendEmail(i[0], i[1], i[2], title, newsUrl) # 메일로 전송
+                        sendEmail(i[1], i[2], title, newsUrl) # 메일로 전송
             
             db.commit()
 
@@ -111,14 +113,15 @@ def connectEmail() :
     smtp.login(sender, passwd)
 
 # 이메일 전송
-def sendEmail(user_seq, email, keyword, title, url):
+def sendEmail(email, keyword, title, url):
     subject = keyword + "에 대한 뉴스배달입니다."
-    message = title + "\n" + "중앙일보\n\n" + url 
+    message = "<a href='%s'>%s</a>" %(url, title)
+    message += "<br>중앙일보"
 
     mail_to = []
     mail_to.append(email)
 
-    msg = MIMEText(message.encode('utf-8'), _subtype='plain', _charset='utf-8')
+    msg = MIMEText(message, 'html')
     msg['Subject'] = Header(subject.encode('utf-8'), 'utf-8')
     msg['From'] = myemail
     msg['To'] = ','.join(mail_to)
