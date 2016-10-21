@@ -3,6 +3,7 @@
 from flask import *
 from os import urandom
 import pymysql
+import datetime
 
 app = Flask(__name__)
 app.secret_key = urandom(16)
@@ -33,6 +34,25 @@ def main():
 				email=session['email'], seq=session['seq'])
 	else: # 세션 실패
 		return render_template("main.html")
+
+# 키워드 관리 page
+@app.route('/delivered_news')
+def deliveredNews():
+	if('email' in session): # 세션 성공
+
+		seq = session['seq']
+
+		today = datetime.date.today()
+		tomorrow = today + datetime.timedelta(days = 1)
+
+		cur = g.db.cursor()
+		cur.execute("SELECT company, delivery_log.keyword, title, crawling_news.date, crawling_news.url FROM delivery_log, crawling_news WHERE delivery_log.news_seq = crawling_news.seq AND delivery_log.user_seq = '%s' AND crawling_news.date BETWEEN '%s' AND '%s' ORDER BY date;" %(seq, today, tomorrow)) # 등록된 키워드 정보를 가져오기
+		rows = cur.fetchall()
+
+		return render_template('delivered_news.html', is_authenticated=True,
+				email=session['email'], seq=session['seq'], rows=rows)
+	else: # 세션 실패
+		return render_template("signin.html")
 
 # 키워드 등록 page
 @app.route('/register_keyword')
@@ -191,5 +211,5 @@ def manageKeyword_delete():
 	return jsonify({"status": "success"})	
 
 if __name__ == "__main__": 
-	# app.run(debug=True)
-	app.run(host="0.0.0.0", port=5000)
+	app.run(debug=True)
+	# app.run(host="0.0.0.0", port=5000)

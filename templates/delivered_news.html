@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% include "head.html" %}
+</head>
+
+<body>
+
+	<div class="container">
+		{% include "header.html" %}
+
+		<br><br><br>
+
+		<div class="col-md-10 col-md-offset-1">
+			<br>
+
+			<div class="table-responsive">
+				<table class="table table-striped">
+				<colgroup>
+					<col width="50"/>
+					<col width="50"/>
+					<col width="200"/>
+					<col width="50"/>
+				</colgroup>
+				<thread>
+					<tr>
+						<td>신문사</td>
+						<td>키워드</td>
+						<td>제목</td>
+						<td>시간</td>
+					</tr>
+				</thread>
+				<tbody>
+					{% for i in rows %}
+					<tr>
+						<td>{{i[0]}}</td>
+						<td>{{i[1]}}</td>
+						<td><a href="{{i[4]}}" target="_blank">{{i[2]}}</a></td>
+						<td>{{i[3]}}</td>
+					</tr>
+					{% endfor %}     
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	</div> <!-- /container -->
+</body>
+</html>
