@@ -29,7 +29,6 @@ cur = db.cursor()
 
 def newsCrawling() :
     url1 = "http://news.joins.com/article/"
-    url2 = "?cloc=joongang|home|newslist1big"
     
     query = "SELECT url FROM crawling_news WHERE company = '중앙일보' ORDER BY seq DESC LIMIT 1"
     cur.execute(query)
@@ -42,7 +41,7 @@ def newsCrawling() :
     
     while True :
         try :
-            newsUrl = url1 + str(latelySeq) + url2
+            newsUrl = url1 + str(latelySeq)
             r = requests.get(newsUrl)
             r.encoding = "utf8"
             html = r.text
