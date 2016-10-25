@@ -54,15 +54,6 @@ def deliveredNews():
 	else: # 技记 角菩
 		return render_template("signin.html")
 
-# 虐况靛 殿废 page
-@app.route('/register_keyword')
-def registerKeyword():
-	if('email' in session): # 技记 己傍
-		return render_template('register_keyword.html', is_authenticated=True,
-				email=session['email'], seq=session['seq'])
-	else: # 技记 角菩
-		return render_template("signin.html")
-
 # 虐况靛 包府 page
 @app.route('/manage_keyword')
 def manageKeyword():

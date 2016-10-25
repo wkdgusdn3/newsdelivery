@@ -9,14 +9,11 @@ $(document).ready( function () {
         case "/delivered_news" :
         $("li[name='menuBar'][value='1']").addClass('active');
         break;
-        case "/register_keyword" :
+        case "/manage_keyword" :
         $("li[name='menuBar'][value='2']").addClass('active');
         break;
-        case "/manage_keyword" :
-        $("li[name='menuBar'][value='3']").addClass('active');
-        break;
         case "/manage_info" :
-        $("li[name='menuBar'][value='4']").addClass('active');
+        $("li[name='menuBar'][value='3']").addClass('active');
         break;
     }
 });
