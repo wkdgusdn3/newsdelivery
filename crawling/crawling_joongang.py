@@ -49,8 +49,12 @@ def newsCrawling() :
 
             title = soup.select(".subject h1")[0].text.strip()
             category = soup.select("meta")[23]["content"]
+            company = soup.select("div .byline em")[0].text
             date = soup.select("div .byline em")[1].text[3:]
             content = ""
+
+            if company != "[중앙일보]" :
+                continue
 
             for i in soup.select("#article_body") :
                 content += i.text.strip()
