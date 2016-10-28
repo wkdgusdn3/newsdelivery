@@ -12,10 +12,10 @@ from email.header import Header
 
 # database 연결
 def setDB() :
-    host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
-    id = "wkdgusdn3"
-    # host = "localhost"
-    # id = "root"
+    # host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
+    # id = "wkdgusdn3"
+    host = "localhost"
+    id = "root"
     password = "wkdgusdn3"
     name = "news_delivery"
 
@@ -54,6 +54,7 @@ def newsCrawling() :
             content = ""
 
             if company != "[중앙일보]" :
+                latelySeq += 1
                 continue
 
             for i in soup.select("#article_body") :
