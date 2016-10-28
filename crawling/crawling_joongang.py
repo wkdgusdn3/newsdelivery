@@ -78,7 +78,6 @@ def newsCrawling() :
             db.commit()
 
         except :
-            print(newsUrl)
             print(sys.exc_info()[0])
             exceptCount += 1
 
@@ -92,7 +91,7 @@ def newsCrawling() :
 
 # database에서 keyword를 가져온다
 def getKeyword() :
-    query = "SELECT user.seq, email, keyword, company, realtime_delivery FROM keyword, user WHERE keyword.user_seq = user.seq AND user.seq = 1"
+    query = "SELECT user.seq, email, keyword, company, realtime_delivery FROM keyword, user WHERE keyword.user_seq = user.seq"
     cur.execute(query)
 
     keyword = cur.fetchall()
