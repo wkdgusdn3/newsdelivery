@@ -10,10 +10,10 @@ from email.header import Header
 
 # database 연결
 def setDB() :
-    host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
-    id = "wkdgusdn3"
-    # host = "localhost"
-    # id = "root"
+    # host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
+    # id = "wkdgusdn3"
+    host = "localhost"
+    id = "root"
     password = "wkdgusdn3"
     name = "news_delivery"
 
@@ -75,7 +75,16 @@ def newsDetailCrawling(url) :
     r.encoding = "utf-8"
     html = r.text
     soup = BeautifulSoup(html, 'lxml')
-    
+
+    category = ""
+
+    categoryTemp = soup.select(".article_title02 .location")[0]
+
+    for temp in categoryTemp.select("span") :
+        category += temp.text
+
+    category += categoryTemp.select("strong a")[0].text
+
     time = soup.select(".date")[0].text # time get
     
     # 기사 내용 get
@@ -84,7 +93,7 @@ def newsDetailCrawling(url) :
     content = pymysql.escape_string(content)
     
     # update문을 통해서 기사 update
-    query = "UPDATE crawling_news SET date = '%s', content = '%s' WHERE url = '%s'" %(time, content, url)
+    query = "UPDATE crawling_news SET category = '%s', date = '%s', content = '%s' WHERE url = '%s'" %(category, time, content, url)
     cur.execute(query)
 
 # database에서 keyword를 가져온다
