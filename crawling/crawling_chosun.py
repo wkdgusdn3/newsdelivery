@@ -79,6 +79,7 @@ def newsDetailCrawling(url) :
     html = r.text
     soup = BeautifulSoup(html, 'lxml')
 
+    category = soup.select("title")[0].text.split("-")[-1].strip()
     time = soup.select(".date_ctrl_2011 p")[0].text.strip()[5:21] # time get
 
     # 기사 내용 get
@@ -89,7 +90,7 @@ def newsDetailCrawling(url) :
     content = pymysql.escape_string(content)
 
     # update문을 통해서 기사 udpate
-    query = "UPDATE crawling_news SET date = '%s', content = '%s' WHERE url = '%s'" %(time, content, url)
+    query = "UPDATE crawling_news SET category = '%s', date = '%s', content = '%s' WHERE url = '%s'" %(category, time, content, url)
     cur.execute(query)
 
 # database에서 keyword를 가져온다
