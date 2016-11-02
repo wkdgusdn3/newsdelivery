@@ -5,7 +5,7 @@ import re
 import sys
 import smtplib
 import email
-import time
+import datetime
 
 from email.mime.text import MIMEText
 from email.header import Header
@@ -51,9 +51,9 @@ def connectEmail() :
     
 # 이메일 전송
 def sendEmail(email, content):
-    now = time.localtime()
+    now = datetime.date.today()
     
-    subject = str(now.tm_year) + "." + str(now.tm_mon) + "." + str(now.tm_mday) + " Daily 뉴스 배달입니다."
+    subject = str(now.year) + "." + str(now.month) + "." + str(now.day) + " Daily 뉴스 배달입니다."
     message = content
 
     mail_to = []
@@ -67,9 +67,8 @@ def sendEmail(email, content):
     smtp.sendmail(myemail, mail_to, msg.as_string( ))
 
 def sendDailyDelivery():
-    now = time.localtime()
-    today = str(now.tm_year) + "." + str(now.tm_mon) + "." + str(now.tm_mday) # 오늘의 날짜
-    tomorrow = str(now.tm_year) + "." + str(now.tm_mon) + "." + str(now.tm_mday+1) # 내일의 날짜
+    today = datetime.date.today()   # 오늘 날짜
+    tomorrow = today + datetime.timedelta(days = 1) # 내일 날짜
     
     query = "SELECT email, title, company, url, crawling_news.date FROM delivery_log, user, crawling_news WHERE user.seq = delivery_log.user_seq AND crawling_news.seq = delivery_log.news_seq AND crawling_news.date BETWEEN '%s' AND '%s' AND user.daily_delivery = 1 ORDER BY email, date" %(today, tomorrow)
     cur.execute(query)
