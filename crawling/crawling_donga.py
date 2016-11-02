@@ -125,7 +125,9 @@ def connectEmail() :
 # 이메일 전송
 def sendEmail(email, keyword, title, url):
     subject = keyword + "에 대한 뉴스배달입니다."
-    message = "<a href='%s'>%s</a>" %(url, title)
+    message = """<a href="http://www.newsdelivery.co.kr"><img src="http://newsdelivery.co.kr/static/images/logo.png" style="width:150px"></a>
+    <hr style="border-color:#2E75B6;"><br>"""
+    message += "<a href='%s'>%s</a>" %(url, title)
     message += "<br>동아일보"
 
     mail_to = []

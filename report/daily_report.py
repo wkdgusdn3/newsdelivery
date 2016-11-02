@@ -6,7 +6,6 @@ import sys
 import smtplib
 import email
 import datetime
-
 from email.mime.text import MIMEText
 from email.header import Header
 
@@ -80,7 +79,8 @@ def sendDailyDelivery():
     
     if len(rows) > 0 :
         email = rows[0][0] # 이메일 설정
-        content = ""
+        content = """<a href="http://www.newsdelivery.co.kr"><img src="http://newsdelivery.co.kr/static/images/logo.png" style="width:150px"></a>
+        <hr style="border-color:#2E75B6;"><br>"""
         
         for i in rows :
             if email == i[0] : # 이메일이 같을경우
