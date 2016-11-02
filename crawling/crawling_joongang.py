@@ -15,7 +15,7 @@ def setDB() :
     # host = "localhost"
     # id = "root"
     password = "wkdgusdn3"
-    name = "news_delivery_test"
+    name = "news_delivery"
 
     db = pymysql.connect(host, id, password, name, charset="utf8")
 
