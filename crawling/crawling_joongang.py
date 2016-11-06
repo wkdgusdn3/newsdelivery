@@ -60,21 +60,19 @@ def newsCrawling() :
 
             insertQuery = "INSERT INTO crawling_news(company, category, title, content, url, date) VALUES('중앙일보', '%s', '%s', '%s', '%s', '%s')" %(category, pymysql.escape_string(title), pymysql.escape_string(content), newsUrl, date)
             cur.execute(insertQuery)
-            seq = db.insert_id()
+            newsSeq = cur.lastrowid # 가장 큰 seq get
             
             print(newsUrl)
 
             for i in keyword :
                 if i[2] in title and (i[3] == '중앙일보' or i[3] == '전체'):   # 등록된 키워드이면
                     # 뉴스 배달 로그 저장
-                    deliveryLogQuery = "INSERT INTO delivery_log(user_seq, news_seq, keyword) VALUE('%s', '%s', '%s');" %(i[0], seq, i[2])
+                    deliveryLogQuery = "INSERT INTO delivery_log(user_seq, news_seq, keyword) VALUE('%s', '%s', '%s');" %(i[0], newsSeq, i[2])
                     cur.execute(deliveryLogQuery)
+                    deliverySeq = cur.lastrowid
                     
                     if i[4] == 1 :
-                        sendEmail(i[1], i[2], title, newsUrl) # 메일로 전송
-            
-            db.commit()
-
+                        sendEmail(i[1], i[2], title, newsSeq, deliverySeq) # 메일로 전송
         except :
             print(sys.exc_info()[0])
             exceptCount += 1
@@ -114,11 +112,14 @@ def connectEmail() :
     smtp.login(sender, passwd)
 
 # 이메일 전송
-def sendEmail(email, keyword, title, url):
+def sendEmail(email, keyword, title, newsSeq, deliverySeq):
+    passUrl = "http://newsdelivery.co.kr/passnews?news_seq=%s&delivery_seq=%s" %(newsSeq, deliverySeq)
+    # passUrl = "http://localhost:5000/passnews?news_seq=%s&delivery_seq=%s" %(newsSeq, deliverySeq)
+
     subject = keyword + "에 대한 뉴스배달입니다."
     message = """<a href="http://www.newsdelivery.co.kr"><img src="http://newsdelivery.co.kr/static/images/logo.png" style="width:150px"></a>
     <hr style="border-color:#2E75B6;"><br>"""
-    message += "<a href='%s'>%s</a>" %(url, title)
+    message += "<a href='%s'>%s</a>" %(passUrl, title)
     message += "<br>중앙일보"
 
     mail_to = []

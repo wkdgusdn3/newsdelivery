@@ -11,7 +11,7 @@ app.secret_key = urandom(16)
 host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
 id = "wkdgusdn3"
 password="wkdgusdn3"
-name="news_delivery"
+name="news_delivery_test"
 
 @app.before_request
 def before_request():
@@ -202,6 +202,27 @@ def manageKeyword_delete():
 	g.db.commit()
 
 	return jsonify({"status": "success"})	
+
+# pass news
+@app.route('/passnews', methods=['GET'])
+def passNews():
+
+	newsSeq = request.args.get("news_seq", '')
+	deliverySeq = request.args.get("delivery_seq", '')
+	
+
+	cur = g.db.cursor()
+
+	updateQuery = "UPDATE delivery_log SET view_count = view_count + 1 WHERE seq = '%s'" %(deliverySeq)
+	cur.execute(updateQuery)
+	g.db.commit()
+
+	selectQuery = "SELECT url FROM crawling_news WHERE seq = '%s'" %(newsSeq)
+	cur.execute(selectQuery)
+	rows = cur.fetchall()
+
+	return redirect(rows[0][0])
+
 
 if __name__ == "__main__": 
 	app.run(debug=True)

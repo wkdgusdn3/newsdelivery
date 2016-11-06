@@ -16,7 +16,7 @@ def setDB() :
     # host = "localhost"
     # id = "root"
     password = "wkdgusdn3"
-    name = "news_delivery"
+    name = "news_delivery_test"
 
     db = pymysql.connect(host, id, password, name, charset="utf8")
 
@@ -69,7 +69,7 @@ def sendDailyDelivery():
     today = datetime.date.today()   # 오늘 날짜
     tomorrow = today + datetime.timedelta(days = 1) # 내일 날짜
     
-    query = "SELECT email, title, company, url, crawling_news.date FROM delivery_log, user, crawling_news WHERE user.seq = delivery_log.user_seq AND crawling_news.seq = delivery_log.news_seq AND crawling_news.date BETWEEN '%s' AND '%s' AND user.daily_delivery = 1 ORDER BY email, date" %(today, tomorrow)
+    query = "SELECT email, title, company, crawling_news.seq, crawling_news.date, delivery_log.seq FROM user, crawling_news, delivery_log WHERE user.seq = delivery_log.user_seq AND crawling_news.seq = delivery_log.news_seq AND delivery_log.timestamp BETWEEN '%s' AND '%s' AND user.daily_delivery = 1 ORDER BY email, date" %(today, tomorrow)
     cur.execute(query)
     
     rows = cur.fetchall()
@@ -85,7 +85,8 @@ def sendDailyDelivery():
         for i in rows :
             if email == i[0] : # 이메일이 같을경우
                 # 기사, 신문사, url 추가
-                content += "<a href='%s'>%s</a><br>" %(i[3], i[1])
+                url = "http://www.newsdelivery.co.kr/passnews?delivery_seq='%s'&news_seq='%s'" %(i[5], i[3])
+                content += "<a href='%s'>%s</a><br>" %(url, i[1])
                 content += str(i[4]) + "<br>"
                 content += i[2] + "<br><br>"
 
@@ -93,8 +94,10 @@ def sendDailyDelivery():
                 sendEmail(email, content) # daily email 전송
 
                 email = i[0] # 이메일 초기화
-                content = "" # 내용 초기화
-                content += "<a href='%s'>%s</a><br>" %(i[3], i[1])
+                url = "http://www.newsdelivery.co.kr/passnews?delivery_seq='%s'&news_seq='%s'" %(i[5], i[3])
+                content = """<a href="http://www.newsdelivery.co.kr"><img src="http://newsdelivery.co.kr/static/images/logo.png" style="width:150px"></a>
+        <hr style="border-color:#2E75B6;"><br>"""   # 내용 초기화
+                content += "<a href='%s'>%s</a><br>" %(url, i[1])
                 content += str(i[4]) + "<br>"
                 content += i[2] + "<br><br>"
 
