@@ -53,7 +53,7 @@ def deliveredNews():
 
 		for row in rows :
 			# passNews.append("http://localhost:5000/passnews?news_seq=%s&delivery_seq=%s" %(row[3], row[0]))
-			passUrl.append("http://newsdelivery.co.kr/passnews?news_seq=%s&delivery_seq=%s" %(row[3], row[0]))
+			passNews.append("http://newsdelivery.co.kr/passnews?news_seq=%s&delivery_seq=%s" %(row[3], row[0]))
 
 		return render_template('delivered_news.html', is_authenticated=True,
 				email=session['email'], seq=session['seq'], rows=rows, passNews=passNews, zip=zip)
