@@ -79,13 +79,13 @@ def sendDailyDelivery():
     
     if len(rows) > 0 :
         email = rows[0][0] # 이메일 설정
-        content = """<a href="http://www.newsdelivery.co.kr"><img src="http://newsdelivery.co.kr/static/images/logo.png" style="width:150px"></a>
+        content = """<a href="http://newsdelivery.co.kr"><img src="http://newsdelivery.co.kr/static/images/logo.png" style="width:150px"></a>
         <hr style="border-color:#2E75B6;"><br>"""
         
         for i in rows :
             if email == i[0] : # 이메일이 같을경우
                 # 기사, 신문사, url 추가
-                url = "http://www.newsdelivery.co.kr/passnews?delivery_seq='%s'&news_seq='%s'" %(i[5], i[3])
+                url = "http://newsdelivery.co.kr/passnews?delivery_seq='%s'&news_seq='%s'" %(i[5], i[3])
                 content += "<a href='%s'>%s</a><br>" %(url, i[1])
                 content += str(i[4]) + "<br>"
                 content += i[2] + "<br><br>"
@@ -94,8 +94,8 @@ def sendDailyDelivery():
                 sendEmail(email, content) # daily email 전송
 
                 email = i[0] # 이메일 초기화
-                url = "http://www.newsdelivery.co.kr/passnews?delivery_seq='%s'&news_seq='%s'" %(i[5], i[3])
-                content = """<a href="http://www.newsdelivery.co.kr"><img src="http://newsdelivery.co.kr/static/images/logo.png" style="width:150px"></a>
+                url = "http://newsdelivery.co.kr/passnews?delivery_seq='%s'&news_seq='%s'" %(i[5], i[3])
+                content = """<a href="http://newsdelivery.co.kr"><img src="http://newsdelivery.co.kr/static/images/logo.png" style="width:150px"></a>
         <hr style="border-color:#2E75B6;"><br>"""   # 내용 초기화
                 content += "<a href='%s'>%s</a><br>" %(url, i[1])
                 content += str(i[4]) + "<br>"

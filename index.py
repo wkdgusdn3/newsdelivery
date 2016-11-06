@@ -46,11 +46,17 @@ def deliveredNews():
 		tomorrow = today + datetime.timedelta(days = 1)
 
 		cur = g.db.cursor()
-		cur.execute("SELECT company, delivery_log.keyword, title, crawling_news.date, crawling_news.url FROM delivery_log, crawling_news WHERE delivery_log.news_seq = crawling_news.seq AND delivery_log.user_seq = '%s' AND crawling_news.date BETWEEN '%s' AND '%s' ORDER BY date;" %(seq, today, tomorrow)) # 등록된 키워드 정보를 가져오기
+		cur.execute("SELECT delivery_log.seq, company, keyword, crawling_news.seq, title, crawling_news.date FROM delivery_log, crawling_news WHERE delivery_log.news_seq = crawling_news.seq AND delivery_log.user_seq = '%s' AND crawling_news.date BETWEEN '%s' AND '%s' ORDER BY date;" %(seq, today, tomorrow)) # 등록된 키워드 정보를 가져오기
 		rows = cur.fetchall()
 
+		passNews = []
+
+		for row in rows :
+			# passNews.append("http://localhost:5000/passnews?news_seq=%s&delivery_seq=%s" %(row[3], row[0]))
+			passUrl.append("http://newsdelivery.co.kr/passnews?news_seq=%s&delivery_seq=%s" %(row[3], row[0]))
+
 		return render_template('delivered_news.html', is_authenticated=True,
-				email=session['email'], seq=session['seq'], rows=rows)
+				email=session['email'], seq=session['seq'], rows=rows, passNews=passNews, zip=zip)
 	else: # 세션 실패
 		return render_template("signin.html")
 

@@ -128,7 +128,7 @@ def sendEmail(email, keyword, title, newsSeq, deliverySeq):
     # passUrl = "http://localhost:5000/passnews?news_seq=%s&delivery_seq=%s" %(newsSeq, deliverySeq)
 
     subject = keyword + "에 대한 뉴스배달입니다."
-    message = """<a href="http://www.newsdelivery.co.kr"><img src="http://newsdelivery.co.kr/static/images/logo.png" style="width:150px"></a>
+    message = """<a href="http://newsdelivery.co.kr"><img src="http://newsdelivery.co.kr/static/images/logo.png" style="width:150px"></a>
     <hr style="border-color:#2E75B6;"><br>"""
     message += "<a href='%s'>%s</a>" %(passUrl, title)
     message += "<br>조선일보"
