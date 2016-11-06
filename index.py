@@ -103,15 +103,17 @@ def signIn_signIn() :
 	password = request.form.get("password")
 
 	cur = g.db.cursor();
-	cur.execute("SELECT * FROM user WHERE email='%s' AND password='%s'" %(email, password))	# email, 비밀번호 확인
+	cur.execute("SELECT seq, email FROM user WHERE email='%s' AND password='%s'" %(email, password))	# email, 비밀번호 확인
 	rows = cur.fetchall()
 
 	if len(rows) == 0 :	# 로그인 실패
 		return jsonify({"status": "fail"})	# 로그인 실패
 	else : # 로그인 성공
-		session['email'] = email
-		session['password'] = password
+		session['email'] = rows[0][1]
 		session['seq'] = rows[0][0]
+
+		cur.execute("INSERT INTO login_log(user_seq) VALUES('%s')" %(rows[0][0]))
+		g.db.commit()
 
 		if('email' in session) : # 세션 성공
 			return jsonify({"status": "success"})
