@@ -69,7 +69,7 @@ def sendDailyDelivery():
     today = datetime.date.today()   # 오늘 날짜
     tomorrow = today + datetime.timedelta(days = 1) # 내일 날짜
     
-    query = "SELECT email, title, company, crawling_news.seq, crawling_news.date, delivery_log.seq FROM user, crawling_news, delivery_log WHERE user.seq = delivery_log.user_seq AND crawling_news.seq = delivery_log.news_seq AND delivery_log.timestamp BETWEEN '%s' AND '%s' AND user.daily_delivery = 1 AND user.seq = 1 ORDER BY email, date" %(today, tomorrow)
+    query = "SELECT email, title, company, crawling_news.seq, crawling_news.date, delivery_log.seq FROM user, crawling_news, delivery_log WHERE user.seq = delivery_log.user_seq AND crawling_news.seq = delivery_log.news_seq AND delivery_log.timestamp BETWEEN '%s' AND '%s' AND user.daily_delivery = 1 ORDER BY email, date" %(today, tomorrow)
     cur.execute(query)
     
     rows = cur.fetchall()
