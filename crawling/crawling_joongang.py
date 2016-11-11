@@ -46,10 +46,12 @@ def newsCrawling() :
             soup = BeautifulSoup(html, "lxml")
 
             title = soup.select(".subject h1")[0].text.strip()
-            category = soup.select("meta")[23]["content"]
+            category = soup.select("script")[0].text.split("dimension9', '")[1].split('\'')[0]
             company = soup.select("div .byline em")[0].text
             date = soup.select("div .byline em")[1].text[3:]
             content = ""
+
+            print(category)
 
             if company != "[중앙일보]" :
                 latelySeq += 1
