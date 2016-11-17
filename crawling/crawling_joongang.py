@@ -65,8 +65,6 @@ def newsCrawling() :
             date = soup.select("div .byline em")[1].text[3:]
             content = ""
 
-            print(category)
-
             if company != "[중앙일보]" :
                 latelySeq += 1
                 continue
