@@ -5,6 +5,7 @@ import re
 import sys
 import smtplib
 import email
+import socket
 from email.mime.text import MIMEText
 from email.header import Header
 
@@ -12,8 +13,6 @@ from email.header import Header
 def setDB() :
     host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
     id = "wkdgusdn3"
-    # host = "localhost"
-    # id = "root"
     password = "wkdgusdn3"
     name = "news_delivery"
 
@@ -21,8 +20,23 @@ def setDB() :
 
     return db
 
+def setDB_pi() :
+    host = "localhost"
+    id = "root"
+    password = "wkdgusdn3"
+    name = "news_delivery"
 
-db = setDB()
+    db = pymysql.connect(host, id, password, name, charset="utf8")
+
+    return db
+
+hostname = socket.gethostname()
+
+if hostname == "raspberrypi" :
+    db = setDB_pi()
+else :
+    db = setDB()
+    
 cur = db.cursor()
 
 def newsCrawling() :
@@ -76,7 +90,7 @@ def newsCrawling() :
                     if i[4] == 1 :
                         sendEmail(i[1], i[2], title, newsSeq, deliverySeq) # 메일로 전송
         except :
-            print(sys.exc_info()[0])
+            # print(sys.exc_info()[0])
             exceptCount += 1
 
             if exceptCount == 100 :

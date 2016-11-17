@@ -6,6 +6,7 @@ import sys
 import smtplib
 import email
 import datetime
+import socket
 from email.mime.text import MIMEText
 from email.header import Header
 
@@ -13,8 +14,16 @@ from email.header import Header
 def setDB() :
     host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
     id = "wkdgusdn3"
-    # host = "localhost"
-    # id = "root"
+    password = "wkdgusdn3"
+    name = "news_delivery"
+
+    db = pymysql.connect(host, id, password, name, charset="utf8")
+
+    return db
+
+def setDB_pi() :
+    host = "localhost"
+    id = "root"
     password = "wkdgusdn3"
     name = "news_delivery"
 
@@ -106,7 +115,13 @@ def sendDailyDelivery():
 global db
 global cur
 
-db = setDB()
+hostname = socket.gethostname()
+
+if hostname == "raspberrypi" :
+    db = setDB_pi()
+else :
+    db = setDB()
+    
 cur = db.cursor()
 
 connectEmail() # 이메일 연결

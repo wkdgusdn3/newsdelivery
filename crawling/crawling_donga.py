@@ -5,6 +5,7 @@ import re
 import sys
 import smtplib
 import email
+import socket
 from email.mime.text import MIMEText
 from email.header import Header
 
@@ -12,8 +13,16 @@ from email.header import Header
 def setDB() :
     host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
     id = "wkdgusdn3"
-    # host = "localhost"
-    # id = "root"
+    password = "wkdgusdn3"
+    name = "news_delivery"
+
+    db = pymysql.connect(host, id, password, name, charset="utf8")
+
+    return db
+
+def setDB_pi() :
+    host = "localhost"
+    id = "root"
     password = "wkdgusdn3"
     name = "news_delivery"
 
@@ -148,7 +157,15 @@ def sendEmail(email, keyword, title, newsSeq, deliverySeq):
 global db
 global cur
 
-db = setDB()
+hostname = socket.gethostname()
+
+if hostname == "raspberrypi" :
+    db = setDB_pi()
+    print("setDB_pi")
+else :
+    db = setDB()
+    print("setDB")
+
 cur = db.cursor()
 
 url = "http://news.donga.com/List?p=" # 동아일보 전체뉴스보는 url
