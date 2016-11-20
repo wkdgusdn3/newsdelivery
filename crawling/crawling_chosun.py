@@ -64,15 +64,15 @@ def newsListCrawling(url) :
 
                     newsDetailCrawling(newsUrl) # news의 세부기사 크롤링
 
-                    # for i in keyword :
-                    #     if i[2] in title and (i[3] == '조선일보' or i[3] == '전체'):   # 등록된 키워드이면
-                    #         # 뉴스 배달 로그 저장
-                    #         deliveryLogQuery = "INSERT INTO delivery_log(user_seq, news_seq, keyword) VALUE('%s', '%s', '%s');" %(i[0], newsSeq, i[2])
-                    #         cur.execute(deliveryLogQuery)
-                    #         deliverySeq = cur.lastrowid
+                    for i in keyword :
+                        if i[2] in title and (i[3] == '조선일보' or i[3] == '전체'):   # 등록된 키워드이면
+                            # 뉴스 배달 로그 저장
+                            deliveryLogQuery = "INSERT INTO delivery_log(user_seq, news_seq, keyword) VALUE('%s', '%s', '%s');" %(i[0], newsSeq, i[2])
+                            cur.execute(deliveryLogQuery)
+                            deliverySeq = cur.lastrowid
 
-                    #         if i[4] == 1 :
-                                # sendEmail(i[1], i[2], title, newsSeq, deliverySeq) # 메일로 전송
+                            if i[4] == 1 :
+                                sendEmail(i[1], i[2], title, newsSeq, deliverySeq) # 메일로 전송
 
                     db.commit()
                 else :  # 이전에 등록한 뉴스이면 종료
