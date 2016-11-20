@@ -15,6 +15,7 @@ def setDB() :
     id = "wkdgusdn3"
     password = "wkdgusdn3"
     name = "news_delivery"
+    # name = "news_delivery_test"
 
     db = pymysql.connect(host, id, password, name, charset="utf8")
 
@@ -41,36 +42,39 @@ def newsListCrawling(url):
         soup = BeautifulSoup(html, "lxml") # html을 beautifulSoup으로 생성
 
         for i in soup.select(".articleList .rightList") :   # 각각의 기사
-            title = i.select(".title a")[0].text # get title
-            newsUrl = i.select("a")[0]["href"] # get url
-            date = i.select("span")[0].text.replace("[", "").replace("]", "") # get date
+            try :
+                title = i.select(".title a")[0].text # get title
+                newsUrl = i.select("a")[0]["href"] # get url
+                date = i.select("span")[0].text.replace("[", "").replace("]", "") # get date
 
-            # 이전에 등록된 기사인지 확인
-            query = "SELECT * FROM crawling_news WHERE url = '%s'" %(newsUrl) 
-            cur.execute(query)
-
-            if cur.rowcount == 0 : # 이전에 등록된 뉴스가 아니면
-                query = "INSERT INTO crawling_news(title, company, url, date) VALUE('%s', '%s', '%s', '%s');" %(pymysql.escape_string(title), '동아일보', newsUrl, date) # 뉴스 insert
+                # 이전에 등록된 기사인지 확인
+                query = "SELECT * FROM crawling_news WHERE url = '%s'" %(newsUrl) 
                 cur.execute(query)
-                newsSeq = cur.lastrowid;   # 가장 큰 seq get
 
-                print(newsUrl)
+                if cur.rowcount == 0 : # 이전에 등록된 뉴스가 아니면
+                    query = "INSERT INTO crawling_news(title, company, url, date) VALUE('%s', '%s', '%s', '%s');" %(pymysql.escape_string(title), '동아일보', newsUrl, date) # 뉴스 insert
+                    cur.execute(query)
+                    newsSeq = cur.lastrowid;   # 가장 큰 seq get
 
-                newsDetailCrawling(newsUrl) # news의 세부기사 크롤링
+                    print(newsUrl)
 
-                for i in keyword :
-                    if i[2] in title and (i[3] == '동아일보' or i[3] == '전체') : # 등록된 키워드이면
-                        # 뉴스 배달 로그 저장
-                        deliveryLogQuery = "INSERT INTO delivery_log(user_seq, news_seq, keyword) VALUE('%s', '%s', '%s');" %(i[0], newsSeq, i[2])
-                        cur.execute(deliveryLogQuery)
-                        deliverySeq = cur.lastrowid
+                    newsDetailCrawling(newsUrl) # news의 세부기사 크롤링
 
-                        if i[4] == 1 :
-                            sendEmail(i[1], i[2], title, newsSeq, deliverySeq) # 이메일로 전송
-            else :
-                db.commit()
-                smtp.quit()
-                sys.exit()
+                    for i in keyword :
+                        if i[2] in title and (i[3] == '동아일보' or i[3] == '전체') : # 등록된 키워드이면
+                            # 뉴스 배달 로그 저장
+                            deliveryLogQuery = "INSERT INTO delivery_log(user_seq, news_seq, keyword) VALUE('%s', '%s', '%s');" %(i[0], newsSeq, i[2])
+                            cur.execute(deliveryLogQuery)
+                            deliverySeq = cur.lastrowid
+
+                            if i[4] == 1 :
+                                sendEmail(i[1], i[2], title, newsSeq, deliverySeq) # 이메일로 전송
+                else :
+                    db.commit()
+                    smtp.quit()
+                    sys.exit()
+            except :
+                print("error : " + str(sys.exc_info()[0]))
 
         if count > 1700 : # 최대 17000개까지만 크롤링
             sys.exit()

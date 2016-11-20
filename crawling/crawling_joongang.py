@@ -15,6 +15,7 @@ def setDB() :
     id = "wkdgusdn3"
     password = "wkdgusdn3"
     name = "news_delivery"
+    # name = "news_delivery_test"
 
     db = pymysql.connect(host, id, password, name, charset="utf8")
 
@@ -88,7 +89,7 @@ def newsCrawling() :
                     if i[4] == 1 :
                         sendEmail(i[1], i[2], title, newsSeq, deliverySeq) # 메일로 전송
         except :
-            # print(sys.exc_info()[0])
+            print("error : " + str(sys.exc_info()[0]))
             exceptCount += 1
 
             if exceptCount == 100 :
