@@ -79,6 +79,8 @@ def newsListCrawling(url) :
                     db.commit()
                     smtp.quit()
                     sys.exit()
+            except SystemExit :
+                sys.exit()
             except :
                 print("error : " + str(sys.exc_info()[0]))
 
