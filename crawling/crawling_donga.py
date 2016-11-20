@@ -73,6 +73,8 @@ def newsListCrawling(url):
                     db.commit()
                     smtp.quit()
                     sys.exit()
+            except SystemExit :
+                sys.exit()
             except :
                 print("error : " + str(sys.exc_info()[0]))
 
@@ -165,10 +167,8 @@ hostname = socket.gethostname()
 
 if hostname == "raspberrypi" :
     db = setDB_pi()
-    print("setDB_pi")
 else :
     db = setDB()
-    print("setDB")
 
 cur = db.cursor()
 
