@@ -14,8 +14,7 @@ def setDB() :
     host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
     id = "wkdgusdn3"
     password = "wkdgusdn3"
-    # name = "news_delivery"
-    name = "news_delivery_test"
+    name = "news_delivery"
 
     db = pymysql.connect(host, id, password, name, charset="utf8")
 
