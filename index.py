@@ -4,18 +4,42 @@ from flask import *
 from os import urandom
 import pymysql
 import datetime
+import socket
 
 app = Flask(__name__)
 app.secret_key = urandom(16)
 
-host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
-id = "wkdgusdn3"
-password="wkdgusdn3"
-name="news_delivery"
+# aws db 연결
+def setDB() :
+    host = "wkdgusdn3.cqvehrgls7j9.ap-northeast-2.rds.amazonaws.com"
+    id = "wkdgusdn3"
+    password = "wkdgusdn3"
+    name = "news_delivery"
+    # name = "news_delivery_test"
+
+    db = pymysql.connect(host, id, password, name, charset="utf8")
+
+    return db
+
+# pi db 연결
+def setDB_pi() :
+    host = "localhost"
+    id = "root"
+    password = "wkdgusdn3"
+    name = "news_delivery"
+
+    db = pymysql.connect(host, id, password, name, charset="utf8")
+
+    return db
 
 @app.before_request
 def before_request():
-	g.db = pymysql.connect(host, id, password, name, charset="utf8")
+	hostname = socket.gethostname()
+
+	if hostname == "raspberrypi" :
+	    g.db = setDB_pi()
+	else :
+	    g.db = setDB()
 
 @app.teardown_request
 def teardown_request(exception):
