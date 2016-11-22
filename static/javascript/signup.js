@@ -18,6 +18,11 @@ function signUp() {
 	var birth = $("#birth").val();
 	var sex = $("#sex").val();
 
+	if(!emailCheck(email)) {
+		alert("메일 형식에 맞지 않습니다.\n다시 입력해주세요.")
+		return null;
+	}
+
 	if(password != password_confirm) { // 비밀번호 check
 		alert("비밀번호가 다릅니다.");
 		return null;
@@ -41,4 +46,15 @@ function signUp() {
 			alert("회원가입에 실패하였습니다.");
 		}
 	});
+}
+
+function emailCheck(email) {
+	
+	re=/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+	if(re.test(email)) {
+		return true;
+	}
+
+	return false;
 }
