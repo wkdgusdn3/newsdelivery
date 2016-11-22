@@ -33,10 +33,10 @@ def setDB_pi() :
 
 hostname = socket.gethostname()
 
-if hostname == "raspberrypi" :
-    db = setDB_pi()
-else :
+if hostname == "ip-172-31-8-241" :
     db = setDB()
+else :
+    db = setDB_pi()
     
 cur = db.cursor()
 

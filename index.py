@@ -36,10 +36,10 @@ def setDB_pi() :
 def before_request():
 	hostname = socket.gethostname()
 
-	if hostname == "raspberrypi" :
-	    g.db = setDB_pi()
+	if hostname == "ip-172-31-8-241" :
+		g.db = setDB()
 	else :
-	    g.db = setDB()
+		g.db = setDB_pi()
 
 @app.teardown_request
 def teardown_request(exception):
