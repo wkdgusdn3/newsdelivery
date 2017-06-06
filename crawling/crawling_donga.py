@@ -111,7 +111,6 @@ def newsDetailCrawling(url) :
     # update문을 통해서 기사 update
     query = "UPDATE crawling_news SET category = '%s', date = '%s', content = '%s' WHERE url = '%s'" %(category, time, content, url)
     cur.execute(query)
-    db.commit()
 
 # database에서 keyword를 가져온다
 def getKeyword() :
