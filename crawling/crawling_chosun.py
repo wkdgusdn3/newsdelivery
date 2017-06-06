@@ -41,7 +41,7 @@ def newsListCrawling(url) :
         r = requests.get(subUrl)
         r.encoding = "euc-kr"
         html = r.text
-        soup = BeautifulSoup(html, "lxml")  # html을 beautifulsoup으로 생성
+        soup = BeautifulSoup(html, "html5lib")  # html을 beautifulsoup으로 생성
 
         for i in soup.select("div .list_item"): # 각각의 기사
             try :
@@ -95,7 +95,7 @@ def newsDetailCrawling(url) :
     r = requests.get(url)
     r.encoding = "euc-kr"
     html = r.text
-    soup = BeautifulSoup(html, 'lxml')
+    soup = BeautifulSoup(html, 'html5lib')
 
     category = soup.select("title")[0].text.split("-")[-1].strip()
     time = soup.select(".date_ctrl_2011 p")[0].text.strip()[5:21] # time get

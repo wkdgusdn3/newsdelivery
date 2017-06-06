@@ -58,7 +58,7 @@ def newsCrawling() :
             r = requests.get(newsUrl)
             r.encoding = "utf8"
             html = r.text
-            soup = BeautifulSoup(html, "lxml")
+            soup = BeautifulSoup(html, "html5lib")
 
             title = soup.select(".subject h1")[0].text.strip()
             category = soup.select("script")[0].text.split("dimension9', '")[1].split('\'')[0]

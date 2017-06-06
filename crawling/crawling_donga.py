@@ -39,7 +39,7 @@ def newsListCrawling(url):
         r = requests.get(subUrl)
         r.encoding = "utf-8"
         html = r.text
-        soup = BeautifulSoup(html, "lxml") # html을 beautifulSoup으로 생성
+        soup = BeautifulSoup(html, "html5lib") # html을 beautifulSoup으로 생성
 
         for i in soup.select(".articleList .rightList") :   # 각각의 기사
             try :
@@ -90,7 +90,7 @@ def newsDetailCrawling(url) :
     r = requests.get(url)
     r.encoding = "utf-8"
     html = r.text
-    soup = BeautifulSoup(html, 'lxml')
+    soup = BeautifulSoup(html, 'html5lib')
 
     category = ""
 
