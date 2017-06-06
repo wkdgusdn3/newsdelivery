@@ -43,9 +43,9 @@ def newsListCrawling(url):
 
         for i in soup.select(".articleList .rightList") :   # 각각의 기사
             try :
-                title = i.select(".title a")[0].text # get title
+                title = i.select(".tit")[0].text # get title
                 newsUrl = i.select("a")[0]["href"] # get url
-                date = i.select("span")[0].text.replace("[", "").replace("]", "") # get date
+                date = i.select(".date")[0].text # get date
 
                 # 이전에 등록된 기사인지 확인
                 query = "SELECT * FROM crawling_news WHERE url = '%s'" %(newsUrl) 
@@ -94,14 +94,14 @@ def newsDetailCrawling(url) :
 
     category = ""
 
-    categoryTemp = soup.select(".article_title02 .location")[0]
+    categoryTemp = soup.select(".article_title .location")[0]
 
     for temp in categoryTemp.select("span") :
         category += temp.text
 
-    category += categoryTemp.select("strong a")[0].text
+    category += categoryTemp.select("a")[0].text
 
-    time = soup.select(".date")[0].text # time get
+    time = soup.select(".date01")[0].text.replace("입력 ", "") # time get
     
     # 기사 내용 get
     content = ""    
@@ -111,6 +111,7 @@ def newsDetailCrawling(url) :
     # update문을 통해서 기사 update
     query = "UPDATE crawling_news SET category = '%s', date = '%s', content = '%s' WHERE url = '%s'" %(category, time, content, url)
     cur.execute(query)
+    db.commit()
 
 # database에서 keyword를 가져온다
 def getKeyword() :
