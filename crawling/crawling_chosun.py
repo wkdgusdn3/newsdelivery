@@ -50,6 +50,8 @@ def newsListCrawling(url) :
                 newsUrl = temp["href"]  # get news url
                 date = i.select(".date_author span")[0].text.split(" ")[0] # get date
 
+                print(newsUrl)
+
                 # 이전에 등록된 기사인지 확인
                 query = "SELECT * FROM crawling_news WHERE url = '%s'" %(newsUrl)
                 cur.execute(query)
@@ -59,8 +61,6 @@ def newsListCrawling(url) :
                     query = "INSERT INTO crawling_news(title, company, url, date) VALUE('%s', '%s', '%s', '%s');" %(pymysql.escape_string(title), '조선일보', newsUrl, date)   # 뉴스 insert
                     cur.execute(query)
                     newsSeq = cur.lastrowid   # 가장 큰 seq get
-
-                    print(newsUrl)
 
                     newsDetailCrawling(newsUrl) # news의 세부기사 크롤링
 
